@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexCommerce Pro - All-in-One E-Commerce Admin Suite</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        .dark .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="h-full bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans antialiased transition-colors duration-200">
+
+    <div class="min-h-full flex flex-col lg:flex-row">
+        
+        <!-- SIDEBAR NAVIGATION -->
+        <aside id="sidebar" class="w-full lg:w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700/80 flex flex-col shrink-0 transition-all duration-200 z-20">
+            <!-- Brand Header -->
+            <div class="h-16 flex items-center justify-between px-6 border-b border-slate-100 dark:border-slate-700/80">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchPage('overview')">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20 font-bold text-lg">
+                        A
+                    </div>
+                    <span class="font-bold text-lg tracking-tight text-slate-900 dark:text-white">ApexCommerce</span>
+                </div>
+                <button id="close-sidebar-btn" class="lg:hidden text-slate-500 hover:text-slate-700 dark:text-slate-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto">
+                <button onclick="switchPage('overview')" id="nav-overview" class="nav-btn w-full flex items-center px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    Overview
+                </button>
+                <button onclick="switchPage('products')" id="nav-products" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white transition-colors">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                        Products
+                    </div>
+                    <span id="badge-products-count" class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full font-semibold">6</span>
+                </button>
+                <button onclick="switchPage('orders')" id="nav-orders" class="nav-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white transition-colors">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        Orders
+                    </div>
+                    <span id="badge-orders-count" class="bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 text-xs px-2 py-0.5 rounded-full font-semibold">6</span>
+                </button>
+                <button onclick="switchPage('customers')" id="nav-customers" class="nav-btn w-full flex items-center px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white transition-colors">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    Customers
+                </button>
+                <button onclick="switchPage('analytics')" id="nav-analytics" class="nav-btn w-full flex items-center px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white transition-colors">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    Analytics & Reports
+                </button>
+                <button onclick="switchPage('settings')" id="nav-settings" class="nav-btn w-full flex items-center px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white transition-colors">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Settings
+                </button>
+            </nav>
+
+            <div class="p-4 border-t border-slate-100 dark:border-slate-700/80">
+                <div class="flex items-center space-x-3 p-2 rounded-xl bg-slate-50 dark:bg-slate-700/40">
+                    <img class="w-10 h-10 rounded-full object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" alt="Admin Avatar">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-semibold text-slate-900 dark:text-white truncate" id="user-display-name">Sarah Jenkins</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Store Admin</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTAINER -->
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+            
+            <!-- TOP NAVBAR -->
+            <header class="h-16 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700/80 flex items-center justify-between px-4 sm:px-6 z-10 transition-colors duration-200">
+                <div class="flex items-center space-x-4">
+                    <button id="toggle-sidebar-btn" class="lg:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                    <div class="relative hidden sm:block w-64 md:w-80">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </span>
+                        <input type="text" id="global-search" placeholder="Quick search..." class="w-full pl-9 pr-4 py-2 text-sm bg-slate-100 dark:bg-slate-700/50 text-slate-800 dark:text-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 border border-transparent">
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <button id="theme-toggle" class="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <svg id="sun-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg id="moon-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+
+                    <div class="relative">
+                        <button id="notif-btn" class="relative p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- MAIN VIEWPORT CONTENT CONTAINER -->
+            <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+                
+                <!-- Toast Notification Banner -->
+                <div id="toast-banner" class="hidden fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3 transition-opacity duration-300">
+                    <span id="toast-msg">Action performed successfully!</span>
+                </div>
+
+                <!-- ================= PAGE 1: OVERVIEW ================= -->
+                <section id="page-overview" class="page-content space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Dashboard Overview</h1>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Real-time stats and performance performance metrics.</p>
+                        </div>
+                        <div class="flex items-center space-x-2 bg-white dark:bg-slate-800 p-1.5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <svg class="w-4 h-4 text-slate-400 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <select id="overview-date-range" onchange="updateOverviewMetrics(this.value)" class="bg-transparent text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 focus:outline-none pr-3 cursor-pointer">
+                                <option value="today">Today</option>
+                                <option value="7days" selected>Last 7 Days</option>
+                                <option value="30days">Last 30 Days</option>
+                                <option value="ytd">Year to Date</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Metric Cards Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Revenue</p>
+                                    <h3 id="card-revenue" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">$48,294.00</h3>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                            </div>
+                            <div class="flex items-center mt-4 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                                <svg class="w-4 h-4 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                                <span id="card-revenue-growth">+14.5%</span>
+                                <span class="text-slate-400 ml-1 font-normal">vs prev period</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Orders</p>
+                                    <h3 id="card-orders" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">1,482</h3>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                                </div>
+                            </div>
+                            <div class="flex items-center mt-4 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                                <svg class="w-4 h-4 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                                <span id="card-orders-growth">+8.2%</span>
+                                <span class="text-slate-400 ml-1 font-normal">vs prev period</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Avg. Order Value</p>
+                                    <h3 id="card-aov" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">$124.50</h3>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-purple-50 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                </div>
+                            </div>
+                            <div class="flex items-center mt-4 text-xs font-medium text-rose-500 dark:text-rose-400">
+                                <svg class="w-4 h-4 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6"></path></svg>
+                                <span id="card-aov-growth">-1.8%</span>
+                                <span class="text-slate-400 ml-1 font-normal">vs prev period</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Conversion Rate</p>
+                                    <h3 id="card-conversion" class="text-2xl font-bold text-slate-900 dark:text-white mt-1">3.42%</h3>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                </div>
+                            </div>
+                            <div class="flex items-center mt-4 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                                <svg class="w-4 h-4 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                                <span id="card-conversion-growth">+0.8%</span>
+                                <span class="text-slate-400 ml-1 font-normal">vs prev period</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="text-base font-bold text-slate-900 dark:text-white">Revenue vs Expenses</h2>
+                                <span class="text-xs text-slate-400">Updated hourly</span>
+                            </div>
+                            <div class="relative h-72 w-full">
+                                <canvas id="overviewChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <h2 class="text-base font-bold text-slate-900 dark:text-white mb-1">Sales by Category</h2>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Product vertical share</p>
+                            </div>
+                            <div class="relative h-56 w-full flex items-center justify-center">
+                                <canvas id="categoryDoughnutChart"></canvas>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 text-xs pt-3 border-t border-slate-100 dark:border-slate-700/80">
+                                <div class="flex items-center justify-between"><span class="text-slate-500">Electronics</span><span class="font-bold">42%</span></div>
+                                <div class="flex items-center justify-between"><span class="text-slate-500">Apparel</span><span class="font-bold">28%</span></div>
+                                <div class="flex items-center justify-between"><span class="text-slate-500">Footwear</span><span class="font-bold">18%</span></div>
+                                <div class="flex items-center justify-between"><span class="text-slate-500">Accessories</span><span class="font-bold">12%</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Activity Feed & Top Products Split -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                            <h2 class="text-base font-bold text-slate-900 dark:text-white mb-4">Live Activity Feed</h2>
+                            <div class="space-y-4" id="activity-feed">
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold shrink-0">ORD</div>
+                                    <div class="flex-1 text-xs">
+                                        <p class="font-semibold text-slate-900 dark:text-white">New Order #ORD-9482 placed</p>
+                                        <p class="text-slate-500">Alex Morgan purchased Wireless Headphones Pro ($299.00)</p>
+                                        <span class="text-[10px] text-slate-400">2 minutes ago</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold shrink-0">PAY</div>
+                                    <div class="flex-1 text-xs">
+                                        <p class="font-semibold text-slate-900 dark:text-white">Payment received for #ORD-9481</p>
+                                        <p class="text-slate-500">David Chen paid $189.50 via Credit Card</p>
+                                        <span class="text-[10px] text-slate-400">14 minutes ago</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs font-bold shrink-0">STK</div>
+                                    <div class="flex-1 text-xs">
+                                        <p class="font-semibold text-slate-900 dark:text-white">Low Stock Warning</p>
+                                        <p class="text-slate-500">Waterproof Travel Pack stock dropped to 3 units</p>
+                                        <span class="text-[10px] text-slate-400">1 hour ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                            <h2 class="text-base font-bold text-slate-900 dark:text-white mb-4">Quick Actions</h2>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button onclick="openAddProductModal()" class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/30 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 transition-all text-left group">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-500 text-white flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">+</div>
+                                    <h4 class="text-xs font-bold text-slate-900 dark:text-white">Add Product</h4>
+                                    <p class="text-[10px] text-slate-500">Create item entry</p>
+                                </button>
+                                <button onclick="switchPage('orders')" class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/30 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 transition-all text-left group">
+                                    <div class="w-8 h-8 rounded-lg bg-indigo-500 text-white flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">📦</div>
+                                    <h4 class="text-xs font-bold text-slate-900 dark:text-white">Review Orders</h4>
+                                    <p class="text-[10px] text-slate-500">Process queue</p>
+                                </button>
+                                <button onclick="exportCSV('analytics')" class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/30 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 transition-all text-left group">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">📊</div>
+                                    <h4 class="text-xs font-bold text-slate-900 dark:text-white">Export Sales</h4>
+                                    <p class="text-[10px] text-slate-500">Download CSV</p>
+                                </button>
+                                <button onclick="switchPage('settings')" class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/30 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 transition-all text-left group">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-500 text-white flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">⚙️</div>
+                                    <h4 class="text-xs font-bold text-slate-900 dark:text-white">Store Config</h4>
+                                    <p class="text-[10px] text-slate-500">Gateway & options</p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= PAGE 2: PRODUCTS MANAGEMENT ================= -->
+                <section id="page-products" class="page-content hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Product Catalog</h1>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Manage inventory, stock levels, pricing, and variants.</p>
+                        </div>
+                        <button onclick="openAddProductModal()" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold shadow-md shadow-blue-500/20 flex items-center justify-center space-x-2 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            <span>Add New Product</span>
+                        </button>
+                    </div>
+
+                    <!-- Products Controls & Filters -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm flex flex-col sm:flex-row gap-3 justify-between">
+                        <div class="relative flex-1">
+                            <input type="text" id="prod-search" oninput="filterProducts()" placeholder="Search product name or SKU..." class="w-full pl-9 pr-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                        <div class="flex gap-2">
+                            <select id="prod-cat-filter" onchange="filterProducts()" class="px-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-700 dark:text-slate-200 focus:outline-none">
+                                <option value="ALL">All Categories</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Apparel">Apparel</option>
+                                <option value="Footwear">Footwear</option>
+                                <option value="Accessories">Accessories</option>
+                            </select>
+                            <select id="prod-stock-filter" onchange="filterProducts()" class="px-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-700 dark:text-slate-200 focus:outline-none">
+                                <option value="ALL">All Stock Status</option>
+                                <option value="In Stock">In Stock</option>
+                                <option value="Low Stock">Low Stock</option>
+                                <option value="Out of Stock">Out of Stock</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Products Table -->
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50/70 dark:bg-slate-700/40 text-[11px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100 dark:border-slate-700">
+                                        <th class="py-3 px-4">Product</th>
+                                        <th class="py-3 px-4">SKU</th>
+                                        <th class="py-3 px-4">Category</th>
+                                        <th class="py-3 px-4">Price</th>
+                                        <th class="py-3 px-4">Stock</th>
+                                        <th class="py-3 px-4">Status</th>
+                                        <th class="py-3 px-4 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="products-table-body" class="divide-y divide-slate-100 dark:divide-slate-700/50 text-xs sm:text-sm">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= PAGE 3: ORDERS MANAGEMENT ================= -->
+                <section id="page-orders" class="page-content hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Orders & Fulfillment</h1>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Track, update, and manage customer shipments.</p>
+                        </div>
+                        <button onclick="exportCSV('orders')" class="px-3.5 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs sm:text-sm font-semibold hover:bg-slate-200 transition-colors flex items-center space-x-1.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            <span>Export CSV</span>
+                        </button>
+                    </div>
+
+                    <!-- Orders Filter Controls -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm flex flex-col sm:flex-row gap-3 justify-between">
+                        <div class="relative flex-1">
+                            <input type="text" id="order-search-input" oninput="filterOrdersTable()" placeholder="Search Order ID, Customer Name..." class="w-full pl-9 pr-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                        <select id="order-status-filter" onchange="filterOrdersTable()" class="px-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-700 dark:text-slate-200 focus:outline-none">
+                            <option value="ALL">All Order Statuses</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <!-- Orders Table -->
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50/70 dark:bg-slate-700/40 text-[11px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100 dark:border-slate-700">
+                                        <th class="py-3 px-4">Order ID</th>
+                                        <th class="py-3 px-4">Customer</th>
+                                        <th class="py-3 px-4">Date</th>
+                                        <th class="py-3 px-4">Payment</th>
+                                        <th class="py-3 px-4">Total</th>
+                                        <th class="py-3 px-4">Status Toggle</th>
+                                        <th class="py-3 px-4 text-right">Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="orders-page-table-body" class="divide-y divide-slate-100 dark:divide-slate-700/50 text-xs sm:text-sm">
+                                    <!-- Dynamic Content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= PAGE 4: CUSTOMERS ================= -->
+                <section id="page-customers" class="page-content hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Customer Directory</h1>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">View customer lifetime value and activity.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm flex flex-col sm:flex-row gap-3 justify-between">
+                        <div class="relative flex-1">
+                            <input type="text" id="cust-search" oninput="filterCustomers()" placeholder="Search customer name or email..." class="w-full pl-9 pr-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                        <select id="cust-tier-filter" onchange="filterCustomers()" class="px-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-700 dark:text-slate-200 focus:outline-none">
+                            <option value="ALL">All Tiers</option>
+                            <option value="VIP">VIP</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50/70 dark:bg-slate-700/40 text-[11px] font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100 dark:border-slate-700">
+                                        <th class="py-3 px-4">Customer</th>
+                                        <th class="py-3 px-4">Status Tier</th>
+                                        <th class="py-3 px-4">Total Orders</th>
+                                        <th class="py-3 px-4">Total Spent</th>
+                                        <th class="py-3 px-4">Last Active</th>
+                                        <th class="py-3 px-4 text-right">Profile</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customers-table-body" class="divide-y divide-slate-100 dark:divide-slate-700/50 text-xs sm:text-sm">
+                                    <!-- Dynamic Content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= PAGE 5: ANALYTICS & REPORTS ================= -->
+                <section id="page-analytics" class="page-content hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Analytics & Advanced Reports</h1>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Deep dive into traffic, conversions, and geo-distribution.</p>
+                        </div>
+                        <button onclick="exportCSV('full-report')" class="px-4 py-2 bg-blue-600 text-white font-medium text-xs sm:text-sm rounded-xl shadow-md hover:bg-blue-700 transition-colors">
+                            Download Comprehensive CSV
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4">Daily Visitor Traffic</h3>
+                            <div class="relative h-64 w-full">
+                                <canvas id="trafficBarChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4">Conversion Funnel Analysis</h3>
+                            <div class="space-y-4 text-xs sm:text-sm">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="font-medium text-slate-700 dark:text-slate-300">Sessions / Visitors</span>
+                                        <span class="font-bold text-slate-900 dark:text-white">42,890 (100%)</span>
+                                    </div>
+                                    <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-blue-500 rounded-full w-full"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="font-medium text-slate-700 dark:text-slate-300">Product Page Views</span>
+                                        <span class="font-bold text-slate-900 dark:text-white">21,440 (50.0%)</span>
+                                    </div>
+                                    <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-indigo-500 rounded-full w-1/2"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="font-medium text-slate-700 dark:text-slate-300">Added to Cart</span>
+                                        <span class="font-bold text-slate-900 dark:text-white">6,433 (15.0%)</span>
+                                    </div>
+                                    <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-purple-500 rounded-full w-[15%]"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="font-medium text-slate-700 dark:text-slate-300">Completed Checkout</span>
+                                        <span class="font-bold text-slate-900 dark:text-white">1,482 (3.45%)</span>
+                                    </div>
+                                    <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-emerald-500 rounded-full w-[3.45%]"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white mb-3">Top Sales Locations</h3>
+                            <ul class="space-y-3 text-xs sm:text-sm">
+                                <li class="flex justify-between items-center"><span class="text-slate-600 dark:text-slate-400">🇺🇸 United States</span><span class="font-bold text-slate-900 dark:text-white">$24,800</span></li>
+                                <li class="flex justify-between items-center"><span class="text-slate-600 dark:text-slate-400">🇬🇧 United Kingdom</span><span class="font-bold text-slate-900 dark:text-white">$8,450</span></li>
+                                <li class="flex justify-between items-center"><span class="text-slate-600 dark:text-slate-400">🇩🇪 Germany</span><span class="font-bold text-slate-900 dark:text-white">$6,120</span></li>
+                                <li class="flex justify-between items-center"><span class="text-slate-600 dark:text-slate-400">🇨🇦 Canada</span><span class="font-bold text-slate-900 dark:text-white">$4,920</span></li>
+                                <li class="flex justify-between items-center"><span class="text-slate-600 dark:text-slate-400">🇦🇺 Australia</span><span class="font-bold text-slate-900 dark:text-white">$4,004</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm">
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white mb-3">Traffic Sources</h3>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                                <div class="p-3 bg-slate-50 dark:bg-slate-700/40 rounded-xl">
+                                    <p class="text-xs text-slate-400">Organic Search</p>
+                                    <p class="text-lg font-bold text-blue-600 dark:text-blue-400 mt-1">45%</p>
+                                </div>
+                                <div class="p-3 bg-slate-50 dark:bg-slate-700/40 rounded-xl">
+                                    <p class="text-xs text-slate-400">Direct</p>
+                                    <p class="text-lg font-bold text-indigo-600 dark:text-indigo-400 mt-1">25%</p>
+                                </div>
+                                <div class="p-3 bg-slate-50 dark:bg-slate-700/40 rounded-xl">
+                                    <p class="text-xs text-slate-400">Social Media</p>
+                                    <p class="text-lg font-bold text-purple-600 dark:text-purple-400 mt-1">18%</p>
+                                </div>
+                                <div class="p-3 bg-slate-50 dark:bg-slate-700/40 rounded-xl">
+                                    <p class="text-xs text-slate-400">Email Marketing</p>
+                                    <p class="text-lg font-bold text-emerald-600 dark:text-emerald-400 mt-1">12%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= PAGE 6: SETTINGS ================= -->
+                <section id="page-settings" class="page-content hidden space-y-6">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Store Settings</h1>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Configure payments, shipping, store information, and preferences.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Profile Card -->
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm space-y-4">
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white border-b pb-2 dark:border-slate-700">Store Profile</h3>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-500">Store Name</label>
+                                <input type="text" id="setting-store-name" value="ApexCommerce Pro" class="w-full mt-1 p-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-500">Support Email</label>
+                                <input type="email" id="setting-store-email" value="support@apexcommerce.com" class="w-full mt-1 p-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-500">Currency</label>
+                                <select class="w-full mt-1 p-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl">
+                                    <option>USD ($)</option>
+                                    <option>EUR (€)</option>
+                                    <option>GBP (£)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Payment Gateways -->
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm space-y-4">
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white border-b pb-2 dark:border-slate-700">Payment Integrations</h3>
+                            <div class="space-y-3 text-xs sm:text-sm">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-medium text-slate-800 dark:text-slate-200">Stripe Payments</span>
+                                    <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded cursor-pointer">
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="font-medium text-slate-800 dark:text-slate-200">PayPal Express</span>
+                                    <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded cursor-pointer">
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="font-medium text-slate-800 dark:text-slate-200">Apple Pay</span>
+                                    <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded cursor-pointer">
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="font-medium text-slate-800 dark:text-slate-200">Klarna Pay Later</span>
+                                    <input type="checkbox" class="w-4 h-4 text-blue-600 rounded cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shipping Options -->
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm space-y-4">
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white border-b pb-2 dark:border-slate-700">Shipping Rules</h3>
+                            <div class="space-y-3 text-xs sm:text-sm">
+                                <div class="flex items-center justify-between">
+                                    <span>Standard Ground ($5.00)</span>
+                                    <input type="checkbox" checked class="w-4 h-4 rounded">
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span>Express 2-Day ($15.00)</span>
+                                    <input type="checkbox" checked class="w-4 h-4 rounded">
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span>Free Shipping over $100</span>
+                                    <input type="checkbox" checked class="w-4 h-4 rounded">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button onclick="saveSettings()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-md transition-colors text-sm">
+                            Save Settings Changes
+                        </button>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL 1: ADD / EDIT PRODUCT -->
+    <div id="modal-product" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl p-6 space-y-4">
+            <div class="flex justify-between items-center border-b pb-3 dark:border-slate-700">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white" id="modal-prod-title">Add New Product</h3>
+                <button onclick="closeProductModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xl font-bold">&times;</button>
+            </div>
+            
+            <form id="product-form" onsubmit="handleProductFormSubmit(event)" class="space-y-3 text-xs sm:text-sm">
+                <input type="hidden" id="prod-form-id">
+                <div>
+                    <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Product Title</label>
+                    <input type="text" id="prod-form-name" required class="w-full p-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">SKU</label>
+                        <input type="text" id="prod-form-sku" required class="w-full p-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Category</label>
+                        <select id="prod-form-category" class="w-full p-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none">
+                            <option>Electronics</option>
+                            <option>Apparel</option>
+                            <option>Footwear</option>
+                            <option>Accessories</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Price ($)</label>
+                        <input type="number" step="0.01" id="prod-form-price" required class="w-full p-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Stock Units</label>
+                        <input type="number" id="prod-form-stock" required class="w-full p-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Image URL</label>
+                    <input type="text" id="prod-form-img" placeholder="https://images.unsplash.com/..." class="w-full p-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none">
+                </div>
+                <div class="flex justify-end space-x-2 pt-3 border-t dark:border-slate-700">
+                    <button type="button" onclick="closeProductModal()" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl font-medium">Cancel</button>
+                    <button type="submit" class="px-5 py-2 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: ORDER DETAILS -->
+    <div id="modal-order-details" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl p-6 space-y-4">
+            <div class="flex justify-between items-center border-b pb-3 dark:border-slate-700">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white" id="order-detail-id">Order #ORD-0000</h3>
+                <button onclick="closeOrderModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xl font-bold">&times;</button>
+            </div>
+            <div class="space-y-3 text-xs sm:text-sm" id="order-detail-content">
+                <!-- Dynamically populated -->
+            </div>
+            <div class="flex justify-end border-t pt-3 dark:border-slate-700">
+                <button onclick="closeOrderModal()" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl font-medium">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: CUSTOMER DRAWER / PROFILE -->
+    <div id="modal-customer-profile" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl p-6 space-y-4">
+            <div class="flex justify-between items-center border-b pb-3 dark:border-slate-700">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Customer Profile</h3>
+                <button onclick="closeCustomerModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xl font-bold">&times;</button>
+            </div>
+            <div class="text-center space-y-2">
+                <img id="cust-profile-avatar" class="w-16 h-16 rounded-full mx-auto object-cover border-2 border-blue-500">
+                <h4 id="cust-profile-name" class="font-bold text-slate-900 dark:text-white text-base"></h4>
+                <p id="cust-profile-email" class="text-xs text-slate-400"></p>
+                <span id="cust-profile-tier" class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold"></span>
+            </div>
+            <div class="grid grid-cols-2 gap-3 text-center py-2 bg-slate-50 dark:bg-slate-700/30 rounded-xl">
+                <div>
+                    <p class="text-xs text-slate-400">Total Spent</p>
+                    <p id="cust-profile-spent" class="font-bold text-slate-900 dark:text-white"></p>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-400">Total Orders</p>
+                    <p id="cust-profile-orders" class="font-bold text-slate-900 dark:text-white"></p>
+                </div>
+            </div>
+            <div class="flex justify-end pt-2">
+                <button onclick="closeCustomerModal()" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-medium">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPLICATION JAVASCRIPT LOGIC -->
+    <script>
+        // ================= GLOBAL STATE STORE =================
+        let storeData = {
+            products: [
+                { id: '1', name: 'Wireless Headphones Pro', sku: 'WHP-001', category: 'Electronics', price: 299.00, stock: 45, img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=150' },
+                { id: '2', name: 'Minimalist Smart Watch', sku: 'MSW-002', category: 'Electronics', price: 189.50, stock: 18, img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=150' },
+                { id: '3', name: 'Ultra-Light Running Shoes', sku: 'URS-003', category: 'Footwear', price: 120.00, stock: 6, img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=150' },
+                { id: '4', name: 'Waterproof Travel Pack', sku: 'WTP-004', category: 'Accessories', price: 85.00, stock: 2, img: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&q=80&w=150' },
+                { id: '5', name: 'Cotton Minimalist Hoodie', sku: 'CMH-005', category: 'Apparel', price: 65.00, stock: 80, img: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=150' },
+                { id: '6', name: 'Mechanical Ergonomic Keyboard', sku: 'MEK-006', category: 'Electronics', price: 149.99, stock: 0, img: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&q=80&w=150' }
+            ],
+            orders: [
+                { id: '#ORD-9482', customer: 'Alex Morgan', date: '2026-11-07', payment: 'Paid', status: 'Processing', total: 299.00, items: ['Wireless Headphones Pro (x1)'], address: '123 Market St, San Francisco, CA' },
+                { id: '#ORD-9481', customer: 'David Chen', date: '2026-11-06', payment: 'Paid', status: 'Shipped', total: 189.50, items: ['Minimalist Smart Watch (x1)'], address: '456 Tech Ave, Austin, TX' },
+                { id: '#ORD-9480', customer: 'Emma Watson', date: '2026-11-05', payment: 'Pending', status: 'Processing', total: 120.00, items: ['Ultra-Light Running Shoes (x1)'], address: '789 Broadway, New York, NY' },
+                { id: '#ORD-9479', customer: 'Michael Brown', date: '2026-11-04', payment: 'Paid', status: 'Delivered', total: 85.00, items: ['Waterproof Travel Pack (x1)'], address: '101 Pine St, Seattle, WA' },
+                { id: '#ORD-9478', customer: 'Sophia Martinez', date: '2026-11-03', payment: 'Refunded', status: 'Cancelled', total: 65.00, items: ['Cotton Minimalist Hoodie (x1)'], address: '202 Maple Dr, Miami, FL' },
+                { id: '#ORD-9477', customer: 'James Wilson', date: '2026-11-02', payment: 'Paid', status: 'Delivered', total: 149.99, items: ['Mechanical Ergonomic Keyboard (x1)'], address: '303 Oak St, Chicago, IL' }
+            ],
+            customers: [
+                { id: 'c1', name: 'Alex Morgan', email: 'alex.m@example.com', orders: 12, spent: 2840.00, tier: 'VIP', lastActive: '2 mins ago', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100' },
+                { id: 'c2', name: 'David Chen', email: 'd.chen@example.com', orders: 6, spent: 1120.50, tier: 'Active', lastActive: '14 mins ago', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100' },
+                { id: 'c3', name: 'Emma Watson', email: 'emma.w@example.com', orders: 4, spent: 540.00, tier: 'Active', lastActive: '1 day ago', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=100' },
+                { id: 'c4', name: 'Michael Brown', email: 'mbrown@example.com', orders: 15, spent: 3410.00, tier: 'VIP', lastActive: '3 days ago', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100' },
+                { id: 'c5', name: 'Sophia Martinez', email: 'smartinez@example.com', orders: 1, spent: 65.00, tier: 'Inactive', lastActive: '2 weeks ago', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100' }
+            ]
+        };
+
+        // Charts Global Instances
+        let overviewChartInstance = null;
+        let categoryDoughnutChartInstance = null;
+        let trafficBarChartInstance = null;
+
+        // Dynamic Datasets for Overview Selector
+        const dateRangeDatasets = {
+            'today': { revenue: '$20,300.00', revGrowth: '+5.2%', orders: '237', ordersGrowth: '+3.1%', aov: '$85.65', aovGrowth: '+1.1%', conv: '3.10%', convGrowth: '+0.2%', revData: [1200, 2400, 4800, 3100, 5600, 3200], expData: [800, 1500, 3000, 2000, 3500, 2100], labels: ['6AM', '9AM', '12PM', '3PM', '6PM', '9PM'] },
+            '7days': { revenue: '$48,294.00', revGrowth: '+14.5%', orders: '1,482', ordersGrowth: '+8.2%', aov: '$124.50', aovGrowth: '-1.8%', conv: '3.42%', convGrowth: '+0.8%', revData: [4200, 6800, 5500, 8900, 7400, 9600, 8200], expData: [2800, 4200, 3900, 5100, 4800, 6000, 5400], labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] },
+            '30days': { revenue: '$163,000.00', revGrowth: '+18.9%', orders: '4,220', ordersGrowth: '+11.4%', aov: '$118.20', aovGrowth: '+2.5%', conv: '3.65%', convGrowth: '+1.2%', revData: [32000, 41000, 38000, 52000], expData: [21000, 27000, 25000, 33000], labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'] },
+            'ytd': { revenue: '$827,000.00', revGrowth: '+24.1%', orders: '21,090', ordersGrowth: '+19.3%', aov: '$132.10', aovGrowth: '+4.0%', conv: '3.88%', convGrowth: '+1.5%', revData: [45000, 52000, 48000, 61000, 55000, 67000, 72000, 68000, 81000, 79000, 94000, 105000], expData: [30000, 34000, 31000, 40000, 37000, 42000, 46000, 43000, 52000, 50000, 61000, 68000], labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] }
+        };
+
+        // Initialize Page
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            renderAllTables();
+            initOverviewChart();
+            initCategoryChart();
+            setupSidebarToggle();
+        });
+
+        // SPA Navigation Router
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
+            const targetPage = document.getElementById(`page-${pageId}`);
+            if(targetPage) targetPage.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-50', 'dark:bg-blue-900/40', 'text-blue-600', 'dark:text-blue-400');
+                btn.classList.add('text-slate-600', 'dark:text-slate-400');
+            });
+            const activeBtn = document.getElementById(`nav-${pageId}`);
+            if(activeBtn) {
+                activeBtn.classList.add('bg-blue-50', 'dark:bg-blue-900/40', 'text-blue-600', 'dark:text-blue-400');
+                activeBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
+            }
+
+            // Lazy load specific page charts
+            if (pageId === 'analytics' && !trafficBarChartInstance) {
+                initTrafficChart();
+            }
+        }
+
+        // ================= RENDERING TABLES & STATE =================
+        function renderAllTables() {
+            renderProductsTable(storeData.products);
+            renderOrdersTable(storeData.orders);
+            renderCustomersTable(storeData.customers);
+            document.getElementById('badge-products-count').innerText = storeData.products.length;
+            document.getElementById('badge-orders-count').innerText = storeData.orders.length;
+        }
+
+        // 1. Products Table Render
+        function renderProductsTable(productsList) {
+            const tbody = document.getElementById('products-table-body');
+            tbody.innerHTML = '';
+            if (productsList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400">No products found</td></tr>`;
+                return;
+            }
+
+            productsList.forEach(p => {
+                let stockStatus = 'In Stock';
+                let stockBadge = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400';
+                if (p.stock === 0) {
+                    stockStatus = 'Out of Stock';
+                    stockBadge = 'bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-400';
+                } else if (p.stock <= 10) {
+                    stockStatus = 'Low Stock';
+                    stockBadge = 'bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400';
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50/80 dark:hover:bg-slate-700/40 transition-colors';
+                tr.innerHTML = `
+                    <td class="py-3.5 px-4">
+                        <div class="flex items-center space-x-3">
+                            <img src="${p.img || 'https://via.placeholder.com/150'}" class="w-9 h-9 rounded-lg object-cover border border-slate-200 dark:border-slate-600">
+                            <span class="font-semibold text-slate-900 dark:text-white">${p.name}</span>
+                        </div>
+                    </td>
+                    <td class="py-3.5 px-4 text-slate-500">${p.sku}</td>
+                    <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300">${p.category}</td>
+                    <td class="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">$${parseFloat(p.price).toFixed(2)}</td>
+                    <td class="py-3.5 px-4 text-slate-700 dark:text-slate-300">${p.stock} units</td>
+                    <td class="py-3.5 px-4"><span class="px-2 py-0.5 rounded-md text-[11px] font-semibold ${stockBadge}">${stockStatus}</span></td>
+                    <td class="py-3.5 px-4 text-right space-x-2">
+                        <button onclick="editProduct('${p.id}')" class="text-blue-600 hover:text-blue-800 font-medium text-xs">Edit</button>
+                        <button onclick="deleteProduct('${p.id}')" class="text-rose-600 hover:text-rose-800 font-medium text-xs">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 2. Orders Table Render
+        function renderOrdersTable(ordersList) {
+            const tbody = document.getElementById('orders-page-table-body');
+            tbody.innerHTML = '';
+            if (ordersList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400">No orders found</td></tr>`;
+                return;
+            }
+
+            ordersList.forEach(o => {
+                let payClass = o.payment === 'Paid' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400' : (o.payment === 'Pending' ? 'bg-amber-100 text-amber-700' : 'bg-rose-100 text-rose-700');
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50/80 dark:hover:bg-slate-700/40 transition-colors';
+                tr.innerHTML = `
+                    <td class="py-3.5 px-4 font-semibold text-blue-600 dark:text-blue-400">${o.id}</td>
+                    <td class="py-3.5 px-4 font-medium text-slate-900 dark:text-white">${o.customer}</td>
+                    <td class="py-3.5 px-4 text-slate-500">${o.date}</td>
+                    <td class="py-3.5 px-4"><span class="px-2 py-0.5 rounded-md text-[11px] font-semibold ${payClass}">${o.payment}</span></td>
+                    <td class="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">$${parseFloat(o.total).toFixed(2)}</td>
+                    <td class="py-3.5 px-4">
+                        <select onchange="updateOrderStatus('${o.id}', this.value)" class="text-xs bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg p-1 text-slate-700 dark:text-slate-200">
+                            <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                            <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                            <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                            <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </td>
+                    <td class="py-3.5 px-4 text-right">
+                        <button onclick="viewOrderDetails('${o.id}')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-blue-50 text-blue-600 dark:text-blue-400 rounded-lg text-xs font-semibold">View</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 3. Customers Table Render
+        function renderCustomersTable(customersList) {
+            const tbody = document.getElementById('customers-table-body');
+            tbody.innerHTML = '';
+            customersList.forEach(c => {
+                let tierClass = c.tier === 'VIP' ? 'bg-purple-100 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300' : (c.tier === 'Active' ? 'bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300' : 'bg-slate-100 text-slate-600');
+                
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50/80 dark:hover:bg-slate-700/40 transition-colors';
+                tr.innerHTML = `
+                    <td class="py-3.5 px-4">
+                        <div class="flex items-center space-x-3">
+                            <img src="${c.avatar}" class="w-9 h-9 rounded-full object-cover">
+                            <div>
+                                <p class="font-semibold text-slate-900 dark:text-white">${c.name}</p>
+                                <p class="text-xs text-slate-400">${c.email}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-3.5 px-4"><span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold ${tierClass}">${c.tier}</span></td>
+                    <td class="py-3.5 px-4 font-semibold text-slate-700 dark:text-slate-300">${c.orders} orders</td>
+                    <td class="py-3.5 px-4 font-bold text-slate-900 dark:text-white">$${c.spent.toFixed(2)}</td>
+                    <td class="py-3.5 px-4 text-slate-400 text-xs">${c.lastActive}</td>
+                    <td class="py-3.5 px-4 text-right">
+                        <button onclick="openCustomerProfile('${c.id}')" class="text-blue-600 hover:underline font-semibold text-xs">Profile</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ================= PRODUCT MODAL & CRUD ACTIONS =================
+        function openAddProductModal() {
+            document.getElementById('modal-prod-title').innerText = 'Add New Product';
+            document.getElementById('product-form').reset();
+            document.getElementById('prod-form-id').value = '';
+            document.getElementById('modal-product').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('modal-product').classList.add('hidden');
+        }
+
+        function handleProductFormSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('prod-form-id').value;
+            const name = document.getElementById('prod-form-name').value;
+            const sku = document.getElementById('prod-form-sku').value;
+            const category = document.getElementById('prod-form-category').value;
+            const price = parseFloat(document.getElementById('prod-form-price').value);
+            const stock = parseInt(document.getElementById('prod-form-stock').value);
+            const img = document.getElementById('prod-form-img').value || 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&q=80&w=150';
+
+            if (id) {
+                // Edit existing
+                const index = storeData.products.findIndex(p => p.id === id);
+                if (index !== -1) {
+                    storeData.products[index] = { id, name, sku, category, price, stock, img };
+                    showToast('Product updated successfully!');
+                }
+            } else {
+                // Add new
+                const newId = String(Date.now());
+                storeData.products.unshift({ id: newId, name, sku, category, price, stock, img });
+                showToast('New product added to catalog!');
+            }
+
+            renderAllTables();
+            closeProductModal();
+        }
+
+        function editProduct(id) {
+            const p = storeData.products.find(item => item.id === id);
+            if (!p) return;
+            document.getElementById('modal-prod-title').innerText = 'Edit Product';
+            document.getElementById('prod-form-id').value = p.id;
+            document.getElementById('prod-form-name').value = p.name;
+            document.getElementById('prod-form-sku').value = p.sku;
+            document.getElementById('prod-form-category').value = p.category;
+            document.getElementById('prod-form-price').value = p.price;
+            document.getElementById('prod-form-stock').value = p.stock;
+            document.getElementById('prod-form-img').value = p.img;
+            document.getElementById('modal-product').classList.remove('hidden');
+        }
+
+        function deleteProduct(id) {
+            if (confirm('Are you sure you want to remove this product?')) {
+                storeData.products = storeData.products.filter(p => p.id !== id);
+                renderAllTables();
+                showToast('Product deleted');
+            }
+        }
+
+        function filterProducts() {
+            const search = document.getElementById('prod-search').value.toLowerCase();
+            const category = document.getElementById('prod-cat-filter').value;
+            const stockFilter = document.getElementById('prod-stock-filter').value;
+
+            const filtered = storeData.products.filter(p => {
+                const matchSearch = p.name.toLowerCase().includes(search) || p.sku.toLowerCase().includes(search);
+                const matchCategory = category === 'ALL' || p.category === category;
+                
+                let stockStatus = 'In Stock';
+                if (p.stock === 0) stockStatus = 'Out of Stock';
+                else if (p.stock <= 10) stockStatus = 'Low Stock';
+                const matchStock = stockFilter === 'ALL' || stockStatus === stockFilter;
+
+                return matchSearch && matchCategory && matchStock;
+            });
+            renderProductsTable(filtered);
+        }
+
+        // ================= ORDER ACTIONS & MODALS =================
+        function updateOrderStatus(orderId, newStatus) {
+            const order = storeData.orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = newStatus;
+                showToast(`Order ${orderId} status updated to ${newStatus}`);
+            }
+        }
+
+        function viewOrderDetails(orderId) {
+            const order = storeData.orders.find(o => o.id === orderId);
+            if (!order) return;
+            document.getElementById('order-detail-id').innerText = `Order Details ${order.id}`;
+            document.getElementById('order-detail-content').innerHTML = `
+                <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl space-y-1">
+                    <p class="font-bold text-slate-900 dark:text-white">Customer: ${order.customer}</p>
+                    <p class="text-slate-500">Shipping Address: ${order.address}</p>
+                    <p class="text-slate-500">Date: ${order.date}</p>
+                </div>
+                <div>
+                    <h5 class="font-bold text-slate-900 dark:text-white mb-1">Line Items</h5>
+                    <ul class="list-disc pl-5 text-slate-600 dark:text-slate-300">
+                        ${order.items.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+                <div class="flex justify-between font-bold text-slate-900 dark:text-white border-t pt-2 dark:border-slate-700">
+                    <span>Total Amount</span>
+                    <span class="text-blue-600 dark:text-blue-400">$${parseFloat(order.total).toFixed(2)}</span>
+                </div>
+            `;
+            document.getElementById('modal-order-details').classList.remove('hidden');
+        }
+
+        function closeOrderModal() {
+            document.getElementById('modal-order-details').classList.add('hidden');
+        }
+
+        function filterOrdersTable() {
+            const search = document.getElementById('order-search-input').value.toLowerCase();
+            const status = document.getElementById('order-status-filter').value;
+            const filtered = storeData.orders.filter(o => {
+                const matchSearch = o.id.toLowerCase().includes(search) || o.customer.toLowerCase().includes(search);
+                const matchStatus = status === 'ALL' || o.status === status;
+                return matchSearch && matchStatus;
+            });
+            renderOrdersTable(filtered);
+        }
+
+        // ================= CUSTOMER PROFILE MODAL =================
+        function openCustomerProfile(id) {
+            const c = storeData.customers.find(item => item.id === id);
+            if (!c) return;
+            document.getElementById('cust-profile-avatar').src = c.avatar;
+            document.getElementById('cust-profile-name').innerText = c.name;
+            document.getElementById('cust-profile-email').innerText = c.email;
+            document.getElementById('cust-profile-tier').innerText = c.tier;
+            document.getElementById('cust-profile-spent').innerText = `$${c.spent.toFixed(2)}`;
+            document.getElementById('cust-profile-orders').innerText = `${c.orders} orders`;
+            document.getElementById('modal-customer-profile').classList.remove('hidden');
+        }
+
+        function closeCustomerModal() {
+            document.getElementById('modal-customer-profile').classList.add('hidden');
+        }
+
+        function filterCustomers() {
+            const search = document.getElementById('cust-search').value.toLowerCase();
+            const tier = document.getElementById('cust-tier-filter').value;
+            const filtered = storeData.customers.filter(c => {
+                const matchSearch = c.name.toLowerCase().includes(search) || c.email.toLowerCase().includes(search);
+                const matchTier = tier === 'ALL' || c.tier === tier;
+                return matchSearch && matchTier;
+            });
+            renderCustomersTable(filtered);
+        }
+
+        // ================= CHART INSTANTIATIONS =================
+        function initOverviewChart() {
+            const ctx = document.getElementById('overviewChart').getContext('2d');
+            overviewChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dateRangeDatasets['7days'].labels,
+                    datasets: [
+                        {
+                            label: 'Revenue ($)',
+                            data: dateRangeDatasets['7days'].revData,
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Expenses ($)',
+                            data: dateRangeDatasets['7days'].expData,
+                            borderColor: '#ef4444',
+                            borderDash: [4, 4],
+                            fill: false,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: true } }
+                }
+            });
+        }
+
+        function initCategoryChart() {
+            const ctx = document.getElementById('categoryDoughnutChart').getContext('2d');
+            categoryDoughnutChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Electronics', 'Apparel', 'Footwear', 'Accessories'],
+                    datasets: [{
+                        data: [42, 28, 18, 12],
+                        backgroundColor: ['#3b82f6', '#6366f1', '#a855f7', '#ec4899']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function initTrafficChart() {
+            const ctx = document.getElementById('trafficBarChart').getContext('2d');
+            trafficBarChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Visitors',
+                        data: [3200, 4100, 3900, 5400, 6100, 7800, 6900],
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function updateOverviewMetrics(rangeKey) {
+            const data = dateRangeDatasets[rangeKey];
+            if (!data) return;
+
+            document.getElementById('card-revenue').innerText = data.revenue;
+            document.getElementById('card-revenue-growth').innerText = data.revGrowth;
+            document.getElementById('card-orders').innerText = data.orders;
+            document.getElementById('card-orders-growth').innerText = data.ordersGrowth;
+            document.getElementById('card-aov').innerText = data.aov;
+            document.getElementById('card-aov-growth').innerText = data.aovGrowth;
+            document.getElementById('card-conversion').innerText = data.conv;
+            document.getElementById('card-conversion-growth').innerText = data.convGrowth;
+
+            if (overviewChartInstance) {
+                overviewChartInstance.data.labels = data.labels;
+                overviewChartInstance.data.datasets[0].data = data.revData;
+                overviewChartInstance.data.datasets[1].data = data.expData;
+                overviewChartInstance.update();
+            }
+        }
+
+        // ================= UTILITIES & EXTRA FUNCTIONS =================
+        function initTheme() {
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+            const toggle = document.getElementById('theme-toggle');
+
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+
+            toggle.addEventListener('click', () => {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.theme = 'light';
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.theme = 'dark';
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                }
+            });
+        }
+
+        function setupSidebarToggle() {
+            const sidebar = document.getElementById('sidebar');
+            document.getElementById('toggle-sidebar-btn').addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+            });
+            document.getElementById('close-sidebar-btn').addEventListener('click', () => {
+                sidebar.classList.add('hidden');
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast-banner');
+            document.getElementById('toast-msg').innerText = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        function exportCSV(type) {
+            showToast(`Generating ${type} CSV export file...`);
+        }
+
+        function saveSettings() {
+            const name = document.getElementById('setting-store-name').value;
+            showToast(`Store settings saved for ${name}`);
+        }
+    </script>
+</body>
+</html>
